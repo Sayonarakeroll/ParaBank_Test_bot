@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class Login {
@@ -9,13 +10,13 @@ public class Login {
         this.driver = driver;
     }
 
-    public void preencherUsuario() {
-
+    public void preencherUsuario(String username) {
+        driver.findElement(By.name("username")).sendKeys(username);
     }
-    public void preencherSenha() {
-
+    public void preencherSenha(String senha) {
+        driver.findElement(By.name("password")).sendKeys(senha);
     }
-    public void ClicarLogin(){
-
+    public void enviarLogin(){
+        driver.findElement(By.cssSelector("")).click();
     }
 }

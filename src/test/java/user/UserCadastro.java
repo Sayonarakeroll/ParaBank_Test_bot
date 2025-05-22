@@ -4,10 +4,10 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.Cadastro;
+import pages.ResultadoCadastro;
 
 import java.time.Duration;
 
@@ -31,9 +31,9 @@ public class UserCadastro {
         driver.findElement(By.linkText("Register")).click();
     }
 
-    public void cadastaUsuario(String nome, String sobrenome, String endereco, String cidade,
-                               String estado, String cep, String telefone, String ssn,
-                               String usuario, String senha) {
+    public ResultadoCadastro cadastrarUsuario(String nome, String sobrenome, String endereco, String cidade,
+                                              String estado, String cep, String telefone, String ssn,
+                                              String usuario, String senha) {
 
         cadastro.preencherPrimeiroNome(nome);
         cadastro.preencherSeggundoNome(sobrenome);
@@ -51,6 +51,15 @@ public class UserCadastro {
 
         cadastro.enviarCadastro();
 
+        return cadastro.verificarResultado();
+
+    }public WebDriver getDriver() {
+        return driver;
     }
 
+    public void fecharNavegador() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
 }

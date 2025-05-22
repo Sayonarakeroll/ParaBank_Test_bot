@@ -2,10 +2,11 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.time.Duration;
+import java.util.List;
 
 public class Cadastro {
     private WebDriver driver;
@@ -47,22 +48,47 @@ public class Cadastro {
     public void preencherRepetSenha(String repetSenha){
         driver.findElement(By.name("repeatedPassword")).sendKeys(repetSenha);
     }
-    public void enviarCadastro(){
+    public void enviarCadastro() {
         driver.findElement(By.cssSelector("input.button[value='Register']")).click();
+    }
+    public ResultadoCadastro verificarResultado() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        try {
+            WebElement welcomeMessage = driver.findElement(By.cssSelector("#rightPanel h1"));
+            if (welcomeMessage.isDisplayed() &&
+                    (welcomeMessage.getText().contains("Welcome") ||
+                            welcomeMessage.getText().contains("successfully"))) {
+                return new ResultadoCadastro(true, "Cadastro realizado com sucesso");
+            }
+        } catch (Exception e) {
+        }
             try {
-                // Verifica o cadastro
-                String pageSource = driver.getPageSource();
-                if (pageSource.contains("successfully registered") || pageSource.contains("Welcome")) {
-                    System.out.println("Cadastro realizado com sucesso!");
-                } else if (pageSource.contains("error") || pageSource.contains("failed")) {
-                    System.out.println("Erro no cadastro. Mensagem de erro na página: " +
-                            driver.findElement(By.cssSelector(".error")).getText());
+                List<WebElement> errors = driver.findElements(By.cssSelector(".error"));
+                if (!errors.isEmpty()) {
+                    StringBuilder errorMessage = new StringBuilder();
+                    for (WebElement error : errors) {
+                        if (error.isDisplayed()) {
+                            errorMessage.append(error.getText()).append(", ");
+                        }
+                    }
+                    String message = errorMessage.length() > 0 ?
+                            errorMessage.substring(0, errorMessage.length() - 2) :
+                            "Erro desconhecido";
+
+                    return new ResultadoCadastro(false, message);
                 }
             } catch (Exception e) {
-                System.out.println("Erro ao enviar o cadastro: " + e.getMessage());
+
             }
 
+            return new ResultadoCadastro(false, "Resultado desconhecido");
         }
-    }
+
+        }
+
 
 
