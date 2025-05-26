@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.Login;
+import pages.ResultadoLogin;
 
 import java.time.Duration;
 
@@ -16,25 +17,51 @@ public class UserLogin {
 
    public UserLogin(){
        WebDriverManager.chromedriver().setup();
-       driver = new ChromeDriver();
-       driver.manage().window().maximize();
-       login = new  Login(driver);
+       this.driver = new ChromeDriver();
+       this.driver.manage().window().maximize();
+       this.login = new Login(driver);
    }
 
    public void acessarSite(String url) {
        driver.get(url);
 
        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-       wait.until(ExpectedConditions.elementToBeClickable(By.linkText("")));
+       wait.until(ExpectedConditions.elementToBeClickable(By.name("username")));
 
-       driver.findElement(By.linkText("")).click();
    }
-   public void  fazerLogin(String usuario, String senha){
+   public void acessarPaginaLogin(String url) {
+       driver.get(url);
+
+       try{
+           WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+           wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Log In")));
+           driver.findElement(By.linkText("Log In")).click();
+       } catch (Exception e){
+       }
+   }
+   public ResultadoLogin realizarLogin(String usuario, String senha){
+       System.out.println("Realizando login com usuario: " +usuario);
+
        login.preencherUsuario(usuario);
        login.preencherSenha(senha);
-
-       System.out.println("Logando usuario");
-
        login.enviarLogin();
+
+       return login.verificarResultado();
+   }
+   public void logout() {
+       try{
+           driver.findElement(By.linkText("Log Out")).click();
+           System.out.println("Logout realizado com sucesso");
+       } catch (Exception e) {
+           System.out.println("Erro ao realizar logout; "+ e.getMessage());
+       }
+   }
+   public  WebDriver getDriver(){
+       return driver;
+   }
+   public void fecharNavegador() {
+       if(driver != null) {
+           driver.quit();
+       }
    }
 }

@@ -18,7 +18,7 @@ public class Cadastro {
     public void preencherPrimeiroNome(String nome){
         driver.findElement(By.name("customer.firstName")).sendKeys(nome);
     }
-    public void preencherSeggundoNome(String segundoNome){
+    public void preencherSegundoNome(String segundoNome){
         driver.findElement(By.name("customer.lastName")).sendKeys(segundoNome);
     }
     public void preencherEndereco(String endereco){

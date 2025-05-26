@@ -36,7 +36,7 @@ public class UserCadastro {
                                               String usuario, String senha) {
 
         cadastro.preencherPrimeiroNome(nome);
-        cadastro.preencherSeggundoNome(sobrenome);
+        cadastro.preencherSegundoNome(sobrenome);
         cadastro.preencherEndereco(endereco);
         cadastro.preencherCidade(cidade);
         cadastro.preencherEstado(estado);
